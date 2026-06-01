@@ -29,7 +29,7 @@ export function DayNightCycle() {
 
     const skyColor = new THREE.Color();
     skyColor.setHSL(0.58, 0.3, Math.max(0.08, brightness * 0.25));
-    scene.fog = new THREE.Fog(skyColor, 80, 200);
+    scene.fog = new THREE.Fog(skyColor, 120, 350);
     scene.background = skyColor;
   });
 

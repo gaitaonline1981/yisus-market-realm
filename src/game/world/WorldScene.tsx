@@ -5,11 +5,12 @@ import { NPCMarkers } from "@/game/npcs/NPCMarkers";
 import { ZoneLabels } from "@/game/world/ZoneLabels";
 import { WorldParticles } from "@/game/world/WorldParticles";
 import { WorldBuildings } from "@/game/world/WorldBuildings";
+import { SpaceSky } from "@/game/world/SpaceSky";
 
 function Ground() {
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-      <planeGeometry args={[200, 200]} />
+      <planeGeometry args={[400, 400]} />
       <meshStandardMaterial color="#111827" roughness={0.9} />
     </mesh>
   );
@@ -18,7 +19,7 @@ function Ground() {
 function GridHelper() {
   return (
     <group>
-      <gridHelper args={[200, 100, "#1e293b", "#0f172a"]} position={[0, 0.01, 0]} />
+      <gridHelper args={[400, 100, "#1e293b", "#0f172a"]} position={[0, 0.01, 0]} />
     </group>
   );
 }
@@ -66,6 +67,7 @@ export function WorldScene() {
       <ZoneLabels />
       <NPCMarkers />
       <WorldBuildings />
+      <SpaceSky />
       <WorldParticles />
     </group>
   );
