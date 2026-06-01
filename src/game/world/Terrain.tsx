@@ -66,14 +66,14 @@ export function Terrain() {
         pos[idx * 3 + 1] = h;
         pos[idx * 3 + 2] = z;
 
-        // Color based on height
+        // Color based on height - lighter and more vibrant
         const color = new THREE.Color();
-        if (h < -1) color.set("#0a1628"); // Deep water blue
-        else if (h < 0.5) color.set("#1a2a1a"); // Low grass
-        else if (h < 3) color.set("#2a3a1a"); // Grass
-        else if (h < 6) color.set("#3a4a2a"); // High grass
-        else if (h < 10) color.set("#4a3a2a"); // Rocky
-        else color.set("#5a4a3a"); // Mountain peak
+        if (h < -1) color.set("#1a3a4a"); // Deep water
+        else if (h < 0.5) color.set("#2a4a2a"); // Low ground
+        else if (h < 3) color.set("#3a5a2a"); // Grasslands
+        else if (h < 6) color.set("#4a5a3a"); // Hills
+        else if (h < 10) color.set("#5a4a3a"); // Rocky highlands
+        else color.set("#6a5a4a"); // Mountain peaks
 
         cols[idx * 3] = color.r;
         cols[idx * 3 + 1] = color.g;
