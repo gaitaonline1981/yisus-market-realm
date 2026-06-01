@@ -1,10 +1,45 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, Suspense } from "react";
 import { useFrame } from "@react-three/fiber";
+import { useGLTF, Text } from "@react-three/drei";
 import * as THREE from "three";
-import { Text } from "@react-three/drei";
 import { NPCS } from "@/game/npcs/npcData";
+import { MASTER_NPCS } from "@/game/npcs/masterNPCData";
+import { WORLD_ZONES } from "@/data/worldData";
+
+function MasterModel({ master }: { master: typeof MASTER_NPCS[number] }) {
+  const zone = WORLD_ZONES.find(z => z.id === master.zoneId);
+  const position = zone ? [zone.position[0], 0.5, zone.position[2] + 3] as [number, number, number] : [0, 0.5, 0] as [number, number, number];
+
+  const orbRef = useRef<THREE.Mesh>(null);
+  const { scene } = useGLTF(master.modelPath);
+
+  useFrame((_, delta) => {
+    if (orbRef.current) orbRef.current.position.y = 2.5 + Math.sin(Date.now() * 0.001 + position[0]) * 0.2;
+  });
+
+  return (
+    <group position={position}>
+      {/* Master GLB */}
+      <Suspense fallback={null}>
+        <primitive object={scene} scale={0.8} position={[0, 0.5, 0]} />
+      </Suspense>
+      {/* Orb above master */}
+      <mesh ref={orbRef} position={[0, 2.5, 0]}>
+        <sphereGeometry args={[0.25, 16, 16]} />
+        <meshStandardMaterial color={master.color} emissive={master.color} emissiveIntensity={0.8} transparent opacity={0.9} />
+      </mesh>
+      {/* Name */}
+      <Text position={[0, 3.2, 0]} fontSize={0.4} color={master.color} anchorX="center" anchorY="middle" outlineWidth={0.05} outlineColor="#000">
+        {master.name}
+      </Text>
+      <Text position={[0, 2.8, 0]} fontSize={0.25} color="#888" anchorX="center" anchorY="middle">
+        {master.tradingStyle}
+      </Text>
+    </group>
+  );
+}
 
 function NPCPillar({ npc }: { npc: typeof NPCS[number] }) {
   const orbRef = useRef<THREE.Mesh>(null);
@@ -48,6 +83,11 @@ export function NPCMarkers() {
     <group>
       {NPCS.map((npc) => (
         <NPCPillar key={npc.id} npc={npc} />
+      ))}
+      {MASTER_NPCS.map((master) => (
+        <Suspense key={master.id} fallback={null}>
+          <MasterModel master={master} />
+        </Suspense>
       ))}
     </group>
   );

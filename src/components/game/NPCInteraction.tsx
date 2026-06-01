@@ -5,7 +5,26 @@ import { useGameStore } from "@/stores/useGameStore";
 import { useQuestStore } from "@/stores/useQuestStore";
 import { getSoundEngine } from "@/game/audio/SoundEngine";
 import { NPCS, type GameNPC } from "@/game/npcs/npcData";
+import { MASTER_NPCS } from "@/game/npcs/masterNPCData";
+import { WORLD_ZONES } from "@/data/worldData";
 import type { NPCDialogue } from "@/game/npcs/npcData";
+
+function getMasterPosition(master: typeof MASTER_NPCS[number]): [number, number, number] {
+  const zone = WORLD_ZONES.find(z => z.id === master.zoneId);
+  return zone ? [zone.position[0], 0, zone.position[2] + 3] : [0, 0, 0];
+}
+
+const ALL_NPCS: GameNPC[] = [
+  ...NPCS,
+  ...MASTER_NPCS.map(m => ({
+    id: m.id, name: m.name, role: m.title,
+    zoneId: m.zoneId,
+    position: getMasterPosition(m),
+    dialogues: m.dialogues,
+    questIds: m.questIds,
+    color: m.color,
+  })),
+];
 
 const INTERACT_DISTANCE = 5;
 
