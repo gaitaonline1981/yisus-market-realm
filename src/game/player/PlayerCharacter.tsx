@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, Suspense } from "react";
+import { Suspense, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useGLTF, useAnimations } from "@react-three/drei";
 import { useGameStore } from "@/stores/useGameStore";
@@ -10,43 +10,30 @@ import { MOUNTS } from "@/data/mounts";
 function AnimatedCharModel({ path, scale, isMounted }: { path: string; scale: number; isMounted: boolean }) {
   const ref = useRef<THREE.Group>(null);
   const { scene, animations } = useGLTF(path);
-  const { actions, mixer } = useAnimations(animations, ref);
+  const { actions } = useAnimations(animations, ref);
   const isMoving = useGameStore((s) => {
     const p = s.player.position;
-    return p[0] !== 0 || p[2] !== 5;
+    return Math.abs(p[0]) > 0.1 || Math.abs(p[2] - 5) > 0.1;
   });
 
-  // Play animations based on state
   useEffect(() => {
     if (actions && Object.keys(actions).length > 0) {
-      // Find idle and walk animations
       const animNames = Object.keys(actions);
       const idleAnim = animNames.find((n) => n.toLowerCase().includes("idle"));
       const walkAnim = animNames.find((n) => n.toLowerCase().includes("walk") || n.toLowerCase().includes("run"));
-
-      if (isMoving && walkAnim) {
-        actions[idleAnim || animNames[0]]?.stop();
-        actions[walkAnim]?.reset().play();
-      } else if (idleAnim) {
-        actions[walkAnim || animNames[1]]?.stop();
-        actions[idleAnim]?.reset().play();
-      }
+      if (isMoving && walkAnim) actions[walkAnim]?.reset().play();
+      else if (idleAnim) actions[idleAnim]?.reset().play();
     }
   }, [isMoving, actions]);
 
-  // Fallback: procedural if no animations found
   useFrame(() => {
-    if (!ref.current || Object.keys(actions).length > 0) return;
+    if (!ref.current) return;
+    if (Object.keys(actions).length > 0) return; // Has real animations, skip procedural
     const t = Date.now() * 0.001;
-    if (isMoving) {
-      ref.current.position.y = Math.sin(t * 8) * 0.15 + (isMounted ? 1.5 : 0);
-      ref.current.rotation.z = Math.sin(t * 8) * 0.05;
-    } else {
-      ref.current.position.y = Math.sin(t * 2) * 0.05 + (isMounted ? 1.5 : 0);
-    }
+    ref.current.position.y = isMoving ? Math.sin(t * 8) * 0.1 : Math.sin(t * 2) * 0.03;
   });
 
-  return <primitive ref={ref} object={scene} scale={scale} />;
+  return <primitive ref={ref} object={scene} scale={scale} position={[0, 0.5, 0]} />;
 }
 
 function AnimatedMountModel({ path, scale }: { path: string; scale: number }) {
@@ -56,9 +43,8 @@ function AnimatedMountModel({ path, scale }: { path: string; scale: number }) {
 
   useEffect(() => {
     if (actions && Object.keys(actions).length > 0) {
-      const animNames = Object.keys(actions);
-      const idleAnim = animNames.find((n) => n.toLowerCase().includes("idle"));
-      const walkAnim = animNames.find((n) => n.toLowerCase().includes("walk") || n.toLowerCase().includes("run"));
+      const walkAnim = Object.keys(actions).find((n) => n.toLowerCase().includes("walk") || n.toLowerCase().includes("run"));
+      const idleAnim = Object.keys(actions).find((n) => n.toLowerCase().includes("idle"));
       if (walkAnim) actions[walkAnim]?.reset().play();
       else if (idleAnim) actions[idleAnim]?.reset().play();
     }
@@ -66,7 +52,7 @@ function AnimatedMountModel({ path, scale }: { path: string; scale: number }) {
 
   useFrame(() => {
     if (!ref.current || Object.keys(actions).length > 0) return;
-    ref.current.position.y = Math.sin(Date.now() * 0.003) * 0.1;
+    ref.current.position.y = Math.sin(Date.now() * 0.003) * 0.05;
   });
 
   return <primitive ref={ref} object={scene} scale={scale} />;

@@ -97,6 +97,7 @@ export function ControlsHelp() {
     <div className="fixed bottom-4 left-4 z-50 pointer-events-none">
       <div className="bg-black/60 backdrop-blur-sm border border-white/10 rounded-lg px-3 py-2 text-white/40 text-[10px] space-y-0.5">
         <div><span className="text-white/70 font-bold">WASD</span> · Mover</div>
+        <div><span className="text-white/70 font-bold">Mouse</span> · Cámara (click+arrastrar)</div>
         <div><span className="text-white/70 font-bold">A/D</span> · Rotar</div>
         <div><span className="text-white/70 font-bold">E</span> · Hablar NPC</div>
         <div><span className="text-white/70 font-bold">M</span> · Montar</div>

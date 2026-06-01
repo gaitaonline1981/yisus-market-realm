@@ -3,14 +3,13 @@
 import { useEffect, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useGameStore } from "@/stores/useGameStore";
-import { MOUNTS } from "@/data/mounts";
 
-const BASE_SPEED = 0.12;
+const BASE_SPEED = 0.15;
 const MOUNT_SPEED_MULT = 1.8;
-const ROTATE_SPEED = 0.04;
+const MOUSE_SENSITIVITY = 0.003;
 
 export function PlayerController() {
-  const { camera } = useThree();
+  const { camera, gl } = useThree();
   const keys = useRef<Set<string>>(new Set());
   const moveTo = useGameStore((s) => s.moveTo);
   const rotate = useGameStore((s) => s.rotate);
@@ -20,6 +19,7 @@ export function PlayerController() {
   const posRef = useRef(player.position);
   const rotRef = useRef(player.rotation);
   const mountedRef = useRef(isMounted);
+  const mouseDown = useRef(false);
 
   useEffect(() => {
     posRef.current = player.position;
@@ -27,14 +27,32 @@ export function PlayerController() {
     mountedRef.current = isMounted;
   }, [player.position, player.rotation, isMounted]);
 
+  // Mouse camera control
+  useEffect(() => {
+    const canvas = gl.domElement;
+    const onMouseDown = (e: MouseEvent) => { if (e.button === 0 || e.button === 2) mouseDown.current = true; };
+    const onMouseUp = () => { mouseDown.current = false; };
+    const onMouseMove = (e: MouseEvent) => {
+      if (!mouseDown.current) return;
+      rotRef.current -= e.movementX * MOUSE_SENSITIVITY;
+      rotate(rotRef.current);
+    };
+
+    canvas.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mouseup", onMouseUp);
+    window.addEventListener("mousemove", onMouseMove);
+    return () => {
+      canvas.removeEventListener("mousedown", onMouseDown);
+      window.removeEventListener("mouseup", onMouseUp);
+      window.removeEventListener("mousemove", onMouseMove);
+    };
+  }, [gl, rotate]);
+
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       const key = e.key.toLowerCase();
       keys.current.add(key);
-      if (key === "m") {
-        e.preventDefault();
-        toggleMount();
-      }
+      if (key === "m") { e.preventDefault(); toggleMount(); }
     };
     const onKeyUp = (e: KeyboardEvent) => keys.current.delete(e.key.toLowerCase());
     window.addEventListener("keydown", onKeyDown);
@@ -57,11 +75,11 @@ export function PlayerController() {
     if (k.has("s") || k.has("arrowdown")) dz += speed;
     if (k.has("a") || k.has("arrowleft")) {
       dx -= speed * 0.7;
-      rotRef.current -= ROTATE_SPEED;
+      rotRef.current -= 0.04;
     }
     if (k.has("d") || k.has("arrowright")) {
       dx += speed * 0.7;
-      rotRef.current += ROTATE_SPEED;
+      rotRef.current += 0.04;
     }
 
     if (dx !== 0 || dz !== 0) {
@@ -75,8 +93,8 @@ export function PlayerController() {
     }
 
     const camDist = 8;
-    const camHeight = 5;
-    const target = [posRef.current[0], posRef.current[1] + 2, posRef.current[2]] as const;
+    const camHeight = 6;
+    const target = [posRef.current[0], posRef.current[1] + 1.5, posRef.current[2]] as const;
     camera.position.set(
       target[0] - Math.sin(rotRef.current) * camDist,
       target[1] + camHeight,
