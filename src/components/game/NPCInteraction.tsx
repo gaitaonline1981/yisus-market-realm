@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useGameStore } from "@/stores/useGameStore";
 import { useQuestStore } from "@/stores/useQuestStore";
+import { getSoundEngine } from "@/game/audio/SoundEngine";
 import { NPCS, type GameNPC } from "@/game/npcs/npcData";
 import type { NPCDialogue } from "@/game/npcs/npcData";
 
@@ -36,7 +37,7 @@ export function NPCInteraction() {
 
   const handleInteract = useCallback(() => {
     if (nearNPC && !showPanel) {
-      // Check if player completed this NPC's quest
+      getSoundEngine().playUIClick();
       const completedHere = nearNPC.questIds.filter((id) => completedQuests.includes(id));
       if (completedHere.length > 0) {
         setDialogue({

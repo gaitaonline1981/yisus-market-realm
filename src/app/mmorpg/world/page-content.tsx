@@ -20,6 +20,7 @@ import { ExchangeSettingsPanel } from "@/components/game/ExchangeSettingsPanel";
 import { TokenEarner } from "@/components/game/TokenEarner";
 import { TokenRewards } from "@/components/game/TokenRewards";
 import { TokenWallet } from "@/components/game/TokenWallet";
+import { SoundProvider } from "@/components/game/SoundProvider";
 import { OtherPlayers } from "@/game/player/OtherPlayers";
 import { WorldScene } from "@/game/world/WorldScene";
 import { DayNightCycle } from "@/game/world/DayNightCycle";
@@ -83,6 +84,7 @@ export default function MMORPGWorldPage() {
       <TokenEarner />
       <TokenRewards />
       <TokenWallet />
+      <SoundProvider />
     </div>
   );
 }

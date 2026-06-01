@@ -4,6 +4,7 @@ import { WORLD_ZONES } from "@/data/worldData";
 import { NPCMarkers } from "@/game/npcs/NPCMarkers";
 import { ZoneLabels } from "@/game/world/ZoneLabels";
 import { WorldParticles } from "@/game/world/WorldParticles";
+import { WorldBuildings } from "@/game/world/WorldBuildings";
 
 function Ground() {
   return (
@@ -64,6 +65,7 @@ export function WorldScene() {
       <ZoneMarkers />
       <ZoneLabels />
       <NPCMarkers />
+      <WorldBuildings />
       <WorldParticles />
     </group>
   );
