@@ -2,6 +2,7 @@
 
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
+import { Physics } from "@react-three/rapier";
 import { GameHUD, MiniMap, ControlsHelp } from "@/components/hud/GameHUD";
 import { NPCInteraction } from "@/components/game/NPCInteraction";
 import { QuestTracker } from "@/components/game/QuestTracker";
@@ -21,11 +22,12 @@ import { TokenEarner } from "@/components/game/TokenEarner";
 import { TokenRewards } from "@/components/game/TokenRewards";
 import { TokenWallet } from "@/components/game/TokenWallet";
 import { SoundProvider } from "@/components/game/SoundProvider";
-import { OtherPlayers } from "@/game/player/OtherPlayers";
 import { WorldScene } from "@/game/world/WorldScene";
 import { DayNightCycle } from "@/game/world/DayNightCycle";
 import { PlayerCharacter } from "@/game/player/PlayerCharacter";
-import { PlayerController } from "@/game/player/PlayerController";
+import { OtherPlayers } from "@/game/player/OtherPlayers";
+import { EcctrlPlayerController } from "@/game/player/EcctrlPlayerController";
+import { PostProcessing } from "@/game/world/PostProcessing";
 
 function LoadingScreen() {
   return (
@@ -42,18 +44,21 @@ function GameCanvas() {
   return (
     <Canvas
       shadows
-      camera={{ position: [0, 8, 12], fov: 50 }}
+      camera={{ position: [0, 12, 18], fov: 50 }}
       style={{ position: "fixed", inset: 0 }}
     >
       <DayNightCycle />
       <pointLight position={[0, 5, 0]} intensity={0.3} color="#2FC7C9" />
 
-      <Suspense fallback={null}>
-        <WorldScene />
-        <PlayerCharacter />
-        <OtherPlayers />
-        <PlayerController />
-      </Suspense>
+      <Physics gravity={[0, -20, 0]}>
+        <Suspense fallback={null}>
+          <WorldScene />
+          <PlayerCharacter />
+          <EcctrlPlayerController />
+          <OtherPlayers />
+          <PostProcessing />
+        </Suspense>
+      </Physics>
     </Canvas>
   );
 }

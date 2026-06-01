@@ -1,5 +1,6 @@
 "use client";
 
+import { RigidBody } from "@react-three/rapier";
 import { WORLD_ZONES } from "@/data/worldData";
 import { NPCMarkers } from "@/game/npcs/NPCMarkers";
 import { ZoneLabels } from "@/game/world/ZoneLabels";
@@ -9,10 +10,12 @@ import { SpaceSky } from "@/game/world/SpaceSky";
 
 function Ground() {
   return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-      <planeGeometry args={[400, 400]} />
-      <meshStandardMaterial color="#111827" roughness={0.9} />
-    </mesh>
+    <RigidBody type="fixed" colliders="cuboid">
+      <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[400, 400, 100, 100]} />
+        <meshStandardMaterial color="#1a1a2e" roughness={0.7} wireframe={false} flatShading={false} />
+      </mesh>
+    </RigidBody>
   );
 }
 
