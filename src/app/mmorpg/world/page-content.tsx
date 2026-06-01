@@ -2,7 +2,6 @@
 
 import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Physics } from "@react-three/rapier";
 import { GameHUD, MiniMap, ControlsHelp } from "@/components/hud/GameHUD";
 import { NPCInteraction } from "@/components/game/NPCInteraction";
 import { QuestTracker } from "@/components/game/QuestTracker";
@@ -26,15 +25,16 @@ import { WorldScene } from "@/game/world/WorldScene";
 import { DayNightCycle } from "@/game/world/DayNightCycle";
 import { PlayerCharacter } from "@/game/player/PlayerCharacter";
 import { OtherPlayers } from "@/game/player/OtherPlayers";
-import { EcctrlPlayerController } from "@/game/player/EcctrlPlayerController";
+import { PlayerController } from "@/game/player/PlayerController";
 import { PostProcessing } from "@/game/world/PostProcessing";
 
 function LoadingScreen() {
   return (
-    <div className="absolute inset-0 flex items-center justify-center bg-[#020408] z-50">
+    <div className="absolute inset-0 flex items-center justify-center bg-[#0a0f1a] z-50">
       <div className="text-center space-y-4">
-        <div className="w-12 h-12 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin mx-auto" />
-        <p className="text-cyan-300 text-sm font-mono">Cargando Yisus Market Realm...</p>
+        <div className="w-16 h-16 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin mx-auto" />
+        <p className="text-cyan-300 text-lg font-mono">Cargando Yisus Market Realm...</p>
+        <p className="text-zinc-500 text-xs">Preparando el mundo 3D</p>
       </div>
     </div>
   );
@@ -44,28 +44,26 @@ function GameCanvas() {
   return (
     <Canvas
       shadows
-      camera={{ position: [0, 12, 18], fov: 50 }}
-      style={{ position: "fixed", inset: 0 }}
+      camera={{ position: [0, 10, 15], fov: 50 }}
+      style={{ position: "fixed", inset: 0, background: "#0a0f1a" }}
     >
       <DayNightCycle />
       <pointLight position={[0, 5, 0]} intensity={0.3} color="#2FC7C9" />
 
-      <Physics gravity={[0, -20, 0]}>
-        <Suspense fallback={null}>
-          <WorldScene />
-          <PlayerCharacter />
-          <EcctrlPlayerController />
-          <OtherPlayers />
-          <PostProcessing />
-        </Suspense>
-      </Physics>
+      <Suspense fallback={null}>
+        <WorldScene />
+        <PlayerCharacter />
+        <PlayerController />
+        <OtherPlayers />
+        <PostProcessing />
+      </Suspense>
     </Canvas>
   );
 }
 
 export default function MMORPGWorldPage() {
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-[#020408]">
+    <div className="relative w-full h-screen overflow-hidden bg-[#0a0f1a]">
       <Suspense fallback={<LoadingScreen />}>
         <GameCanvas />
       </Suspense>

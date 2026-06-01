@@ -22,7 +22,7 @@ function ZoneTiles() {
       {WORLD_ZONES.map((zone) => (
         <mesh key={zone.id} position={[zone.position[0], 0.3, zone.position[2]]} rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[zone.size[0], zone.size[1]]} />
-          <meshBasicMaterial color={zone.color} transparent opacity={0.12} />
+          <meshBasicMaterial color={zone.color} transparent opacity={0.15} />
         </mesh>
       ))}
     </group>
@@ -34,9 +34,9 @@ function ZoneMarkers() {
     <group>
       {WORLD_ZONES.map((zone) => (
         <group key={`marker-${zone.id}`}>
-          <mesh position={[zone.position[0], 1.2 + zone.difficulty * 0.5, zone.position[2]]}>
+          <mesh position={[zone.position[0], 1.5, zone.position[2]]}>
             <cylinderGeometry args={[0.3, 0.4, zone.difficulty * 0.6, 8]} />
-            <meshStandardMaterial color={zone.color} emissive={zone.color} emissiveIntensity={0.5} />
+            <meshStandardMaterial color={zone.color} emissive={zone.color} emissiveIntensity={0.6} />
           </mesh>
           <mesh position={[zone.position[0], 0.3, zone.position[2]]} rotation={[-Math.PI / 2, 0, 0]}>
             <ringGeometry args={[2, 2.3, 32]} />

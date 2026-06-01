@@ -2,7 +2,6 @@
 
 import { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
-import { RigidBody } from "@react-three/rapier";
 import * as THREE from "three";
 
 function generateHeightmap(width: number, segments: number): Float32Array {
@@ -93,16 +92,9 @@ export function Terrain() {
 
   return (
     <group>
-      {/* Terrain mesh (visual only) */}
       <mesh ref={meshRef} geometry={geometry} receiveShadow castShadow>
-        <meshStandardMaterial vertexColors roughness={0.8} metalness={0.1} flatShading={false} />
+        <meshStandardMaterial vertexColors roughness={0.7} metalness={0.05} flatShading={false} />
       </mesh>
-      {/* Flat physics collider for walking */}
-      <RigidBody type="fixed" colliders="cuboid" position={[0, -0.5, 0]}>
-        <mesh visible={false}>
-          <boxGeometry args={[400, 0.1, 400]} />
-        </mesh>
-      </RigidBody>
     </group>
   );
 }
