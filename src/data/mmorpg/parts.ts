@@ -1,0 +1,138 @@
+import type { CharacterPart } from "@/types/mmorpg"
+
+export const parts: CharacterPart[] = [
+  {
+    id: "ticker-pilot-helmet",
+    name: "Casco de Piloto",
+    category: "helmet",
+    rarity: "epic",
+    characterIds: ["ticker"],
+    description: "Casco aerodinámico amarillo con visor turquesa.",
+    colorPalette: ["#F2B420", "#39C6C8", "#63E3E6"],
+  },
+  {
+    id: "ticker-yellow-jacket",
+    name: "Chaqueta Amarilla",
+    category: "torso",
+    rarity: "epic",
+    characterIds: ["ticker"],
+    description: "Chaqueta de piloto amarilla con detalles turquesa.",
+    colorPalette: ["#F2B420", "#39C6C8", "#7A5332"],
+  },
+  {
+    id: "ticker-brown-boots",
+    name: "Botas Marrones",
+    category: "boots",
+    rarity: "rare",
+    characterIds: ["ticker"],
+    description: "Botas de aviador marrón con hebillas doradas.",
+    colorPalette: ["#7A5332", "#C89A3D"],
+  },
+  {
+    id: "ticker-trading-device",
+    name: "Dispositivo de Trading",
+    category: "back",
+    rarity: "legendary",
+    characterIds: ["ticker"],
+    description: "Mochila tecnológica con pantallas de mercado.",
+    colorPalette: ["#39C6C8", "#63E3E6", "#1A1A2E"],
+  },
+  {
+    id: "hedgey-plume-helmet",
+    name: "Casco de Pluma",
+    category: "helmet",
+    rarity: "epic",
+    characterIds: ["hedgey"],
+    description: "Casco plateado con pluma turquesa institucional.",
+    colorPalette: ["#BFC3C7", "#35D1D0", "#C99A3E"],
+  },
+  {
+    id: "hedgey-silver-armor",
+    name: "Armadura Plateada",
+    category: "torso",
+    rarity: "legendary",
+    characterIds: ["hedgey"],
+    description: "Armadura de placas plateadas con runas de protección.",
+    colorPalette: ["#BFC3C7", "#C99A3E", "#35D1D0"],
+  },
+  {
+    id: "hedgey-risk-shield",
+    name: "Escudo de Riesgo",
+    category: "weapon",
+    rarity: "institutional",
+    characterIds: ["hedgey"],
+    description: "Escudo dorado con medidor de riesgo integrado.",
+    colorPalette: ["#C99A3E", "#35D1D0", "#6B4428"],
+  },
+  {
+    id: "slyde-tactical-coat",
+    name: "Abrigo Táctico",
+    category: "torso",
+    rarity: "legendary",
+    characterIds: ["slyde"],
+    description: "Abrigo oscuro con capa de camaleón.",
+    colorPalette: ["#6E4AB8", "#214A37", "#36C7C9"],
+  },
+  {
+    id: "maci-explorer-coat",
+    name: "Chaqueta de Exploradora",
+    category: "torso",
+    rarity: "epic",
+    characterIds: ["maci"],
+    description: "Chaqueta turquesa con múltiples bolsillos de exploración.",
+    colorPalette: ["#28C7C9", "#E9962D", "#2E8B57"],
+  },
+  {
+    id: "volumax-heavy-plate",
+    name: "Placa Pesada",
+    category: "torso",
+    rarity: "epic",
+    characterIds: ["volumax"],
+    description: "Coraza de batalla con hombreras de volumen.",
+    colorPalette: ["#2D1B69", "#FFD700", "#00C853"],
+  },
+  {
+    id: "waven-silk-robe",
+    name: "Túnica de Seda",
+    category: "torso",
+    rarity: "legendary",
+    characterIds: ["waven"],
+    description: "Túnica fluida azul y blanca con bordados de ondas.",
+    colorPalette: ["#4A90D9", "#FFFFFF", "#8B5CF6"],
+  },
+  {
+    id: "sproket-tool-vest",
+    name: "Chaleco de Herramientas",
+    category: "torso",
+    rarity: "epic",
+    characterIds: ["sproket"],
+    description: "Chaleco técnico con luces LED y herramientas cuantitativas.",
+    colorPalette: ["#4A4A4A", "#00BFFF", "#FFD700"],
+  },
+  {
+    id: "flipper-trader-jacket",
+    name: "Chaqueta de Trader",
+    category: "torso",
+    rarity: "rare",
+    characterIds: ["flipper"],
+    description: "Chaqueta gris con bolsillos llenos de gangas.",
+    colorPalette: ["#6B7280", "#F59E0B", "#111827"],
+  },
+  {
+    id: "speed-chart-emblem",
+    name: "Emblema Gráfico Veloz",
+    category: "emblem",
+    rarity: "epic",
+    characterIds: ["ticker"],
+    description: "Emblema de gráfico ascendente con brillo dorado.",
+    colorPalette: ["#F2B420", "#C89A3D", "#39C6C8"],
+  },
+]
+
+export function getPartsForCharacter(characterId: string): CharacterPart[] {
+  return parts.filter(p => p.characterIds?.includes(characterId))
+}
+
+export function getPartById(id: string): CharacterPart | undefined {
+  return parts.find(p => p.id === id)
+}

@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@cl/market-core": ["./src/market-core/index.ts"]
     }
   },
   "include": [
