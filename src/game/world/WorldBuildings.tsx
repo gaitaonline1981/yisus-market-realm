@@ -321,12 +321,12 @@ export function WorldBuildings() {
       <Observatory position={[-8, 0, -60]} />
       {Array.from({ length: 6 }).map((_, i) => (<Crystal key={`mo-crystal-${i}`} position={[(-10 + Math.random() * 12) as number, 0, (-62 - Math.random() * 6) as number]} color="#8844ff" />))}
 
-      {/* Scatter: trees, rocks, bushes, grass, flowers across the world */}
-      {Array.from({ length: 60 }).map((_, i) => (<Tree key={`world-tree-${i}`} position={[(Math.random() - 0.5) * 180, 0, (Math.random() - 0.5) * 180]} scale={0.6 + Math.random() * 0.8} />))}
-      {Array.from({ length: 40 }).map((_, i) => (<Rock key={`world-rock-${i}`} position={[(Math.random() - 0.5) * 180, 0, (Math.random() - 0.5) * 180]} scale={0.5 + Math.random() * 1.5} />))}
-      {Array.from({ length: 50 }).map((_, i) => (<Bush key={`world-bush-${i}`} position={[(Math.random() - 0.5) * 180, 0, (Math.random() - 0.5) * 180]} />))}
-      {Array.from({ length: 80 }).map((_, i) => (<GrassTuft key={`world-grass-${i}`} position={[(Math.random() - 0.5) * 180, 0, (Math.random() - 0.5) * 180]} />))}
-      {Array.from({ length: 60 }).map((_, i) => (<Flower key={`world-flower-${i}`} position={[(Math.random() - 0.5) * 180, 0, (Math.random() - 0.5) * 180]} />))}
+      {/* Scatter: lighter for performance */}
+      {Array.from({ length: 25 }).map((_, i) => (<Tree key={`world-tree-${i}`} position={[(Math.random() - 0.5) * 160, 0, (Math.random() - 0.5) * 160]} scale={0.6 + Math.random() * 0.8} />))}
+      {Array.from({ length: 20 }).map((_, i) => (<Rock key={`world-rock-${i}`} position={[(Math.random() - 0.5) * 160, 0, (Math.random() - 0.5) * 160]} scale={0.5 + Math.random() * 1.5} />))}
+      {Array.from({ length: 20 }).map((_, i) => (<Bush key={`world-bush-${i}`} position={[(Math.random() - 0.5) * 160, 0, (Math.random() - 0.5) * 160]} />))}
+      {Array.from({ length: 30 }).map((_, i) => (<GrassTuft key={`world-grass-${i}`} position={[(Math.random() - 0.5) * 160, 0, (Math.random() - 0.5) * 160]} />))}
+      {Array.from({ length: 25 }).map((_, i) => (<Flower key={`world-flower-${i}`} position={[(Math.random() - 0.5) * 160, 0, (Math.random() - 0.5) * 160]} />))}
 
       {/* Roads connecting zones */}
       <RoadPath start={[0, 0, 0]} end={[25, 0, 0]} />
