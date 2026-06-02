@@ -2,21 +2,65 @@
 
 import * as THREE from "three";
 
-function Tree({ position }: { position: [number, number, number] }) {
+function Tree({ position, scale = 1 }: { position: [number, number, number]; scale?: number }) {
+  const v = Math.floor(Math.abs(position[0] * 7 + position[2] * 3) % 3);
+  return (
+    <group position={position} scale={scale}>
+      <mesh position={[0, 1.2, 0]} castShadow><cylinderGeometry args={[0.1, 0.16, 2.2, 6]} /><meshStandardMaterial color="#5a3a2a" roughness={0.9} /></mesh>
+      {v === 0 && <><mesh position={[0, 2.2, 0]} castShadow><coneGeometry args={[1.3, 2.5, 8]} /><meshStandardMaterial color="#2a5a2a" roughness={0.8} /></mesh><mesh position={[0, 3.4, 0]} castShadow><coneGeometry args={[0.9, 2, 8]} /><meshStandardMaterial color="#3a7a3a" roughness={0.7} /></mesh></>}
+      {v === 1 && <><mesh position={[0, 2, 0]} castShadow><sphereGeometry args={[1.1, 8, 6]} /><meshStandardMaterial color="#1a4a2a" roughness={0.8} /></mesh><mesh position={[0, 3, 0]} castShadow><sphereGeometry args={[0.8, 8, 6]} /><meshStandardMaterial color="#2a6a2a" roughness={0.7} /></mesh></>}
+      {v === 2 && <><mesh position={[0, 1.8, 0]} castShadow><coneGeometry args={[1.4, 2.8, 6]} /><meshStandardMaterial color="#234a23" roughness={0.8} /></mesh><mesh position={[0, 2.8, 0]} castShadow><coneGeometry args={[1, 2.2, 6]} /><meshStandardMaterial color="#2d6a2d" roughness={0.7} /></mesh><mesh position={[0, 3.6, 0]} castShadow><coneGeometry args={[0.6, 1.5, 6]} /><meshStandardMaterial color="#3a8a3a" roughness={0.7} /></mesh></>}
+    </group>
+  );
+}
+
+function Bush({ position }: { position: [number, number, number] }) {
   return (
     <group position={position}>
-      <mesh position={[0, 1, 0]} castShadow>
-        <cylinderGeometry args={[0.15, 0.2, 2, 6]} />
-        <meshStandardMaterial color="#4a3728" roughness={0.9} />
-      </mesh>
-      <mesh position={[0, 2.5, 0]} castShadow>
-        <coneGeometry args={[1.2, 3, 8]} />
-        <meshStandardMaterial color="#1a4a2a" roughness={0.8} />
-      </mesh>
-      <mesh position={[0, 3.8, 0]} castShadow>
-        <coneGeometry args={[0.8, 2, 8]} />
-        <meshStandardMaterial color="#228B22" roughness={0.8} />
-      </mesh>
+      <mesh position={[0, 0.4, 0]} castShadow><sphereGeometry args={[0.6, 8, 6]} /><meshStandardMaterial color="#2a5a2a" roughness={0.8} /></mesh>
+      <mesh position={[0.3, 0.5, 0.2]} castShadow><sphereGeometry args={[0.45, 8, 6]} /><meshStandardMaterial color="#3a6a3a" roughness={0.7} /></mesh>
+      <mesh position={[-0.25, 0.45, -0.15]} castShadow><sphereGeometry args={[0.4, 8, 6]} /><meshStandardMaterial color="#2a4a2a" roughness={0.8} /></mesh>
+    </group>
+  );
+}
+
+function GrassTuft({ position }: { position: [number, number, number] }) {
+  return (
+    <group position={position}>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <mesh key={i} position={[(Math.random()-0.5)*0.3, 0.15, (Math.random()-0.5)*0.3]} rotation={[0.1, Math.random()*0.5, 0.1]}>
+          <boxGeometry args={[0.04, 0.3, 0.04]} /><meshStandardMaterial color={i%2 ? "#3a6a2a":"#4a8a3a"} roughness={0.9} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
+function Flower({ position }: { position: [number, number, number] }) {
+  const colors = ["#ff6688","#ffaa44","#ff44aa","#44aaff","#ffff44","#ff4488"];
+  return (
+    <group position={position}>
+      <mesh position={[0, 0.1, 0]}><cylinderGeometry args={[0.02, 0.03, 0.3, 6]} /><meshStandardMaterial color="#4a6a2a" roughness={0.9} /></mesh>
+      <mesh position={[0, 0.3, 0]}><sphereGeometry args={[0.08, 6, 4]} /><meshStandardMaterial color={colors[Math.floor(Math.abs(position[0]*100)%colors.length)]} emissiveIntensity={0.2} /></mesh>
+    </group>
+  );
+}
+
+function Lantern({ position }: { position: [number, number, number] }) {
+  return (
+    <group position={position}>
+      <mesh position={[0, 1.5, 0]} castShadow><cylinderGeometry args={[0.06, 0.08, 3, 8]} /><meshStandardMaterial color="#4a3728" roughness={0.7} /></mesh>
+      <mesh position={[0, 3.2, 0]}><boxGeometry args={[0.3, 0.5, 0.3]} /><meshStandardMaterial color="#ffcc66" emissive="#ffcc66" emissiveIntensity={0.6} /></mesh>
+      <mesh position={[0, 3.2, 0]}><sphereGeometry args={[0.15, 8, 8]} /><meshStandardMaterial color="#ffee88" emissive="#ffee88" emissiveIntensity={0.8} /></mesh>
+    </group>
+  );
+}
+
+function Crystal({ position, color = "#8844ff" }: { position: [number, number, number]; color?: string }) {
+  return (
+    <group position={position}>
+      <mesh position={[0, 0.6, 0]} castShadow><coneGeometry args={[0.3, 1.2, 6]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.4} roughness={0.3} metalness={0.5} /></mesh>
+      <mesh position={[0.3, 0.4, 0.1]} rotation={[0, 0, 0.2]} castShadow><coneGeometry args={[0.15, 0.8, 6]} /><meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.2} roughness={0.3} /></mesh>
     </group>
   );
 }
@@ -230,53 +274,59 @@ export function WorldBuildings() {
       <WaterPlane position={[28, -0.1, -5]} size={4} />
       <WaterPlane position={[24, -0.1, 5]} size={3} />
 
-      {/* Wyckoff Forest */}
-      {Array.from({ length: 12 }).map((_, i) => (
-        <Tree key={`t1-${i}`} position={[(-25 + Math.random() * 15) as number, 0, (Math.random() * 15 - 8) as number]} />
+      {/* Wyckoff Forest - dense trees */}
+      {Array.from({ length: 25 }).map((_, i) => (
+        <Tree key={`t1-${i}`} position={[(-30 + Math.random() * 20) as number, 0, (Math.random() * 20 - 10) as number]} scale={0.8 + Math.random() * 0.7} />
       ))}
 
       {/* Elliott Mountains */}
-      {Array.from({ length: 15 }).map((_, i) => (
-        <Rock key={`em-rock-${i}`} position={[(-5 + Math.random() * 10) as number, 0, (Math.random() * 20 - 40) as number]} scale={1 + Math.random() * 2} />
+      {Array.from({ length: 20 }).map((_, i) => (
+        <Rock key={`em-rock-${i}`} position={[(-8 + Math.random() * 16) as number, 0, (Math.random() * 25 - 42) as number]} scale={1 + Math.random() * 3} />
+      ))}
+      {Array.from({ length: 8 }).map((_, i) => (
+        <Crystal key={`em-crystal-${i}`} position={[(-8 + Math.random() * 16) as number, 0, (Math.random() * 25 - 42) as number]} color="#F59E0B" />
       ))}
 
       {/* Prop Firm City */}
       <PropFirmOffice position={[28, 0, -28]} />
       <PropFirmOffice position={[34, 0, -30]} />
       <ExchangeTower position={[32, 0, -34]} />
+      {Array.from({ length: 6 }).map((_, i) => (<Lantern key={`pf-lantern-${i}`} position={[26 + i*2, 0, -26]} />))}
 
       {/* Risk Temple */}
       <RiskTemple position={[-30, 0, -30]} />
       <Rock position={[-26, 0, -26]} scale={2} />
       <Rock position={[-34, 0, -34]} scale={1.8} />
+      {Array.from({ length: 12 }).map((_, i) => (<Flower key={`rt-flower-${i}`} position={[(-33 + Math.random() * 6) as number, 0, (-33 + Math.random() * 6) as number]} />))}
 
       {/* Backtest District */}
       <AcademyBuilding position={[55, 0, -3]} />
       <DataCenter position={[55, 0, 5]} />
-      {Array.from({ length: 6 }).map((_, i) => (
-        <Tree key={`bd-tree-${i}`} position={[52 + Math.random() * 6, 0, -3 + Math.random() * 6]} />
-      ))}
+      {Array.from({ length: 10 }).map((_, i) => (<Tree key={`bd-tree-${i}`} position={[52 + Math.random() * 8, 0, -3 + Math.random() * 8]} scale={0.7 + Math.random() * 0.5} />))}
+      {Array.from({ length: 8 }).map((_, i) => (<Bush key={`bd-bush-${i}`} position={[50 + Math.random() * 12, 0, -5 + Math.random() * 10]} />))}
 
       {/* Scalping Arena */}
       <Arena position={[-55, 0, 0]} />
+      {Array.from({ length: 4 }).map((_, i) => (<Lantern key={`sa-lantern-${i}`} position={[(-56 + i*3), 0, -3]} />))}
 
       {/* Exchange Port */}
       <ExchangeTower position={[0, 0, 55]} />
       <ExchangeTower position={[-6, 0, 58]} />
       <ExchangeTower position={[6, 0, 58]} />
       <WaterPlane position={[-10, -0.1, 65]} size={5} />
+      {Array.from({ length: 10 }).map((_, i) => (<Lantern key={`ep-lantern-${i}`} position={[(-8 + i*1.8), 0, 53]} />))}
 
       {/* Macro Observatory */}
       <Observatory position={[0, 0, -58]} />
       <Observatory position={[-8, 0, -60]} />
+      {Array.from({ length: 6 }).map((_, i) => (<Crystal key={`mo-crystal-${i}`} position={[(-10 + Math.random() * 12) as number, 0, (-62 - Math.random() * 6) as number]} color="#8844ff" />))}
 
-      {/* Random trees and rocks across the map */}
-      {Array.from({ length: 40 }).map((_, i) => (
-        <Tree key={`random-tree-${i}`} position={[(Math.random() - 0.5) * 100, 0, (Math.random() - 0.5) * 100]} />
-      ))}
-      {Array.from({ length: 30 }).map((_, i) => (
-        <Rock key={`random-rock-${i}`} position={[(Math.random() - 0.5) * 100, 0, (Math.random() - 0.5) * 100]} scale={0.5 + Math.random() * 1.5} />
-      ))}
+      {/* Scatter: trees, rocks, bushes, grass, flowers across the world */}
+      {Array.from({ length: 60 }).map((_, i) => (<Tree key={`world-tree-${i}`} position={[(Math.random() - 0.5) * 180, 0, (Math.random() - 0.5) * 180]} scale={0.6 + Math.random() * 0.8} />))}
+      {Array.from({ length: 40 }).map((_, i) => (<Rock key={`world-rock-${i}`} position={[(Math.random() - 0.5) * 180, 0, (Math.random() - 0.5) * 180]} scale={0.5 + Math.random() * 1.5} />))}
+      {Array.from({ length: 50 }).map((_, i) => (<Bush key={`world-bush-${i}`} position={[(Math.random() - 0.5) * 180, 0, (Math.random() - 0.5) * 180]} />))}
+      {Array.from({ length: 80 }).map((_, i) => (<GrassTuft key={`world-grass-${i}`} position={[(Math.random() - 0.5) * 180, 0, (Math.random() - 0.5) * 180]} />))}
+      {Array.from({ length: 60 }).map((_, i) => (<Flower key={`world-flower-${i}`} position={[(Math.random() - 0.5) * 180, 0, (Math.random() - 0.5) * 180]} />))}
 
       {/* Roads connecting zones */}
       <RoadPath start={[0, 0, 0]} end={[25, 0, 0]} />
