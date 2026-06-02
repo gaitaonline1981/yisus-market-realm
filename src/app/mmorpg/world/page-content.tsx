@@ -3,6 +3,24 @@
 import { Suspense, useEffect, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { GameHUD, MiniMap, ControlsHelp } from "@/components/hud/GameHUD";
+import { NPCInteraction } from "@/components/game/NPCInteraction";
+import { QuestTracker } from "@/components/game/QuestTracker";
+import { InventoryPanel } from "@/components/game/InventoryPanel";
+import { AcademyPanel } from "@/components/game/AcademyPanel";
+import { SkillTreePanel } from "@/components/game/SkillTreePanel";
+import { TradingPanel } from "@/components/game/TradingPanel";
+import { FastTravelPanel } from "@/components/game/FastTravelPanel";
+import { ChatPanel } from "@/components/game/ChatPanel";
+import { ExchangeSettingsPanel } from "@/components/game/ExchangeSettingsPanel";
+import { TokenWallet } from "@/components/game/TokenWallet";
+import { SaveSystem } from "@/components/game/SaveSystem";
+import { AchievementNotifier } from "@/components/game/AchievementNotifier";
+import { LevelUpEffect } from "@/components/game/LevelUpEffect";
+import { MultiplayerConnector } from "@/components/game/MultiplayerConnector";
+import { SoundProvider } from "@/components/game/SoundProvider";
+import { TokenEarner } from "@/components/game/TokenEarner";
+import { TokenRewards } from "@/components/game/TokenRewards";
+import { AudioSystem } from "@/components/game/AudioSystem";
 import * as THREE from "three";
 
 // ====== LIGHTING ======
@@ -259,7 +277,14 @@ export default function MMORPGWorldPage() {
   return (
     <div className="relative w-full h-screen overflow-hidden bg-[#0f172a]">
       <Suspense fallback={null}><GameCanvas /></Suspense>
-      <GameHUD /><MiniMap /><ControlsHelp />
+      <AudioSystem /><GameHUD /><MiniMap /><ControlsHelp />
+      <NPCInteraction /><QuestTracker />
+      <InventoryPanel /><AcademyPanel /><SkillTreePanel />
+      <TradingPanel /><FastTravelPanel /><ChatPanel />
+      <ExchangeSettingsPanel /><TokenWallet />
+      <SaveSystem /><AchievementNotifier /><LevelUpEffect />
+      <MultiplayerConnector /><SoundProvider />
+      <TokenEarner /><TokenRewards />
     </div>
   );
 }
