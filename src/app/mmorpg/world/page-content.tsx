@@ -21,6 +21,7 @@ import { SoundProvider } from "@/components/game/SoundProvider";
 import { TokenEarner } from "@/components/game/TokenEarner";
 import { TokenRewards } from "@/components/game/TokenRewards";
 import { AudioSystem } from "@/components/game/AudioSystem";
+import { NPCMarkers } from "@/game/npcs/NPCMarkers";
 import * as THREE from "three";
 
 // ====== LIGHTING ======
@@ -266,6 +267,7 @@ function GameCanvas() {
       {ZONES.map((z,i)=> <ZoneTerrain key={i} pos={z.pos} size={z.size} type={z.type} color={z.color} />)}
       
       <WorldDecor />
+      <NPCMarkers />
       <PlayerModel />
 
       <fog attach="fog" args={["#0f172a",80,200]} />
